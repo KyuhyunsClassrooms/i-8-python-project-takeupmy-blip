@@ -1,6 +1,6 @@
 # AI 활용 자유 주제 파이썬 미니 프로젝트
-# 이름 또는 학번: 
-# 프로젝트 주제: 
+# 이름 또는 학번: 20817
+# 프로젝트 주제: 과학 상식 퀴즈
 
 # ============================================================
 # 사용 안내
@@ -24,78 +24,75 @@
 # 자신의 주제에 맞게 data를 만드세요.
 #
 # 현재 열의 의미:
-# 0번 열: 활동 이름
-# 1번 열: 필요한 시간(분)
-# 2번 열: 추천 기분
-# 3번 열: 활동 유형
+# 0번 열: 난이도
+# 1번 열: 질문
+# 2번 열: 정답
+# 3번 열: 없음
 # ------------------------------------------------------------
 
-activities = [
-    ["산책하기", 30, "피곤", "운동"],
-    ["짧은 낮잠", 20, "피곤", "휴식"],
-    ["좋아하는 음악 듣기", 10, "우울", "휴식"],
-    ["문제집 3쪽 풀기", 40, "차분", "공부"],
-    ["방 정리하기", 25, "답답", "생활"],
-    ["친구에게 연락하기", 15, "우울", "소통"],
-]
+quiz_show=[
+    ["보통","역학적 에너지에는 어떤 세부 에너지가 있는가?","운동에너지,위치에너지"],
+    ["보통","지구의 내부는 그게 몇가지로 구성되어 있는가","4가지"]
+    ["보통","식물에 없는 인간의 구성 단계는 무엇인가","조직계"]
+    ["보통","PH 정도가 낮을 수록 어떤 염기를 띄는가","산성"]
+    ["쉬움","태양계는 몇 개의 행성을 가지고 있는가","8개"]
+    ["쉬움","유전자 정보를 가지고 있는 것은 무엇인가","DNA"]
+    ["쉬움","H2O는 어떤 물질인가","물"]
 
+]
 
 # ------------------------------------------------------------
 # 2. 함수 정의
 # ------------------------------------------------------------
 
-def show_intro():
-    """프로그램 제목과 안내를 출력한다."""
-    print("=" * 40)
-    print("AI 활용 자유 주제 파이썬 미니 프로젝트")
-    print("예시: 기분과 시간에 따른 활동 추천기")
-    print("=" * 40)
+def show_difficulty_menu():
+    """난이도 메뉴를 보여주고, 이용자가 고른 난이도(쉬움/보통)을 반환합니다."""
+    print("\n--- 🔬 과학 상식 퀴즈 프로그램 ---")
+    print(" 쉬움 난이도")
+    print(" 보통 난이도")
+
+choice = input("원하는 난이도 번호를 선택하세요: ")
+
+difficulty = ""
+if choice == "쉬움":
+        difficulty = "쉬움"
+
+elie choice =="보통":
+     difficulty="보통"
+
+def run_quiz(selected_difficulty):
+    """
+    선택된 난이도의 문제만 출제하고 맞힌 개수를 세어 반환합니다.
+    """
+    print(f"\n📢 [{selected_difficulty}] 난이도 퀴즈를 시작합니다!")
+    score = 0 
+    total = 0 
+    
+
+    for quiz in quiz_show:
+        if quiz[0] == selected_difficulty:
+            total += 1
+            print(f"\nQ. {quiz[1]}")
+            user_answer = input("정답을 입력하세요: ")
+            
+           
+            if user_answer == quiz[2]:
+                print("⭕ 정답입니다!")
+                score += 1
+            else:
+                print(f"❌ 틀렸습니다! 정답은 [{quiz[2]}]입니다.")
+                
+    return score, total
 
 
-def get_user_input():
-    """사용자에게 기분과 남은 시간을 입력받는다."""
-    mood = input("현재 기분을 입력하세요. 예: 피곤, 우울, 차분, 답답: ")
-    minutes = int(input("사용 가능한 시간을 분 단위로 입력하세요: "))
-    return mood, minutes
+def print_result(score, total):
+    """
+    최종 결과를 화면에 출력합니다.
+    """
+    print("\n==========================")
+    print("       🎉 게임 종료 🎉       ")
+    print("==========================")
+    
+    print(f"총 {total}문제 중 {score}문제를 맞혔습니다!")
 
 
-def find_recommendations(data, mood, minutes):
-    """2차원 리스트를 반복하며 조건에 맞는 활동을 찾는다."""
-    results = []
-
-    for row in data:
-        name = row[0]
-        required_minutes = row[1]
-        recommended_mood = row[2]
-        activity_type = row[3]
-
-        # 조건문: 사용자의 기분과 시간이 활동 조건에 맞는지 판단한다.
-        if recommended_mood == mood and required_minutes <= minutes:
-            results.append([name, required_minutes, activity_type])
-
-    return results
-
-
-def print_result(results):
-    """추천 결과를 출력한다."""
-    print("\n[추천 결과]")
-
-    if len(results) == 0:
-        print("조건에 맞는 활동이 없습니다.")
-        print("시간을 늘리거나 다른 기분을 입력해 보세요.")
-    else:
-        for item in results:
-            print(f"- {item[0]} / {item[1]}분 / 유형: {item[2]}")
-
-
-def main():
-    show_intro()
-    mood, minutes = get_user_input()
-    results = find_recommendations(activities, mood, minutes)
-    print_result(results)
-
-
-# ------------------------------------------------------------
-# 3. 프로그램 실행
-# ------------------------------------------------------------
-main()
